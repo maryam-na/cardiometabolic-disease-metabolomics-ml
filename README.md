@@ -67,21 +67,15 @@ streamlit_app/
   pages/                  # Streamlit multipage views
 ```
 
-## Setup
+## Installation
 
 ```bash
-git clone <your-repo-url>
-cd cardiometabolic_disease
+git clone https://github.com/<your-username>/cardiometabolic-disease-metabolomics-ml.git
+cd cardiometabolic-disease-metabolomics-ml
 
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-Always run Streamlit through the active virtual environment:
-
-```bash
-python -m streamlit run streamlit_app/app.py
 ```
 
 ## Data Download
@@ -154,7 +148,7 @@ results/
   causal_association.json
 ```
 
-## Dashboard
+## Streamlit Dashboard
 
 Launch the dashboard:
 
@@ -173,15 +167,27 @@ Dashboard pages:
 - Explainability
 - Causal Inference
 
-## Dashboard Screenshots
+## Dashboard Preview
 
-Add screenshots to `docs/images/` before sharing the repository with recruiters or hiring managers. Suggested captures:
+### Study Overview
 
-- Dashboard home page
-- Risk Prediction page
-- Model Performance page
-- Explainability page
-- Biomarker Analysis page
+![Study overview dashboard](docs/images/01_overview.png)
+
+### Model Performance
+
+![Model performance dashboard](docs/images/02_model_performance.png)
+
+### Explainability
+
+![Explainability dashboard](docs/images/03_explainability.png)
+
+### Biomarker Analysis
+
+![Biomarker analysis dashboard](docs/images/04_biomarker_analysis.png)
+
+### Risk Prediction
+
+![Risk prediction dashboard](docs/images/05_risk_prediction.png)
 
 ## Modeling Workflow
 
@@ -214,21 +220,19 @@ This project is intended as a research-grade machine learning demonstration usin
 - Batch effects or cohort-specific signals may contribute to high performance. Additional metadata would be needed to fully assess run order, sample handling, and assay batch confounding.
 - Serialized `.joblib` files are intended for trusted local artifacts only. Do not load untrusted pickle/joblib files.
 
-## GitHub Publishing Notes
+## Reproduce Results
 
-Generated data, models, figures, and result files are excluded by `.gitignore` to keep the repository lightweight and reproducible. Commit source code, configuration, documentation, and small placeholder files only.
+Generated data, model artifacts, figures, and result files are excluded by `.gitignore` to keep the repository lightweight. The full workflow can be reproduced from the public Metabolomics Workbench source.
 
-Recommended pre-push check:
-
-```bash
-git status --short
-python -m compileall src streamlit_app
-```
-
-Recommended first commit:
+End-to-end reproduction:
 
 ```bash
-git init
-git add .gitignore README.md requirements.txt src streamlit_app notebooks data/raw/.gitkeep data/processed/.gitkeep results/.gitkeep models/.gitkeep figures/.gitkeep
-git commit -m "Initial cardiometabolic disease metabolomics ML pipeline"
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m src.utils download
+python -m src.modeling --trials 5 --seed 42 --n-jobs 1
+python -m streamlit run streamlit_app/app.py
 ```
+
+The repository includes placeholder `.gitkeep` files so the expected output directories are visible without committing generated artifacts.
